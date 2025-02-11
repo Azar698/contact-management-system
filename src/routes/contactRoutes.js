@@ -37,7 +37,7 @@ router.post('/',async(req,res)=>{
 
 router.put('/:id',async(req,res)=>{
     const {error} = contactSchema.validate(req.body);
-    if(err){
+    if(error){
       return res.status(400).json({message:error.details[0].message})
     }
 
@@ -45,13 +45,14 @@ router.put('/:id',async(req,res)=>{
         const updatedContact = await Contact.findByIdAndUpdate(
             req.params.id,
             req.body,
-            {new:body}
+            {new:true}
         );
         if(!updatedContact){
             return res.status(404).json({message:'Contact not found'});
         }
         res.status(200).json(updatedContact)
-    }catch(err){
+    }catch(error){
+        console.log(error)
         res.status(500).json({message:'Error in updating contact',error})
     }
 })
